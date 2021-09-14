@@ -34,11 +34,12 @@ func TestBasicAPI(t *testing.T) {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			t.Fatalf("Expected status code 200, got %v", resp.StatusCode)
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("Expected status code %v, got %v", http.StatusOK, resp.StatusCode)
 		}
 		printResponseBody(resp)
 	})
+
 	t.Run("hello name GET", func(t *testing.T) {
 		t.Log(ts.URL)
 		resp, err := http.Get(fmt.Sprintf("%s/hsjeong", ts.URL))
@@ -47,11 +48,33 @@ func TestBasicAPI(t *testing.T) {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			t.Fatalf("Expected status code 200, got %v", resp.StatusCode)
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("Expected status code %v, got %v", http.StatusOK, resp.StatusCode)
 		}
 		printResponseBody(resp)
 	})
+
+	t.Run("json POST BadReqeust", func(t *testing.T) {
+		t.Log(ts.URL)
+		account := struct {
+			Id int
+		}{
+			1,
+		}
+		b, _ := json.Marshal(account)
+		buff := bytes.NewBuffer(b)
+		resp, err := http.Post(fmt.Sprintf("%s/add", ts.URL), "application/json", buff)
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Logf("Expected status code %v, got %v", http.StatusBadRequest, resp.StatusCode)
+		}
+		printResponseBody(resp)
+	})
+
 	t.Run("json POST", func(t *testing.T) {
 		t.Log(ts.URL)
 		account := Account{10, "Alex"}
@@ -63,8 +86,8 @@ func TestBasicAPI(t *testing.T) {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			t.Fatalf("Expected status code 200, got %v", resp.StatusCode)
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("Expected status code %v, got %v", http.StatusOK, resp.StatusCode)
 		}
 		printResponseBody(resp)
 	})

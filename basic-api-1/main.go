@@ -8,14 +8,21 @@ import (
 )
 
 type Account struct {
-	Id   int    `json:"id" binding:"required`
-	Name string `json:"name" binding:"required`
+	Id   int    `json:"id" binding:"required"`
+	Name string `json:"name" binding:"required"`
 }
 
 func helloHandler(c *gin.Context) {
 	// c.String(http.StatusOK, "hello world!")
 	c.JSON(http.StatusOK, gin.H{
 		"responseData": "hello world",
+	})
+}
+
+func helloUserHandler(c *gin.Context) {
+	name := c.Param("name")
+	c.JSON(http.StatusOK, gin.H{
+		"greetings": fmt.Sprintf("hello %v", name),
 	})
 }
 
@@ -29,13 +36,6 @@ func helloAccountHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"dataReceived": data,
-	})
-}
-
-func helloUserHandler(c *gin.Context) {
-	name := c.Param("name")
-	c.JSON(http.StatusOK, gin.H{
-		"greetings": fmt.Sprintf("hello %v", name),
 	})
 }
 
