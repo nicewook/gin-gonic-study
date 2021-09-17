@@ -8,3 +8,4 @@ Learning web framework with `Gin Gonic` package, Golang
 
 1. Basic REST API: https://jusths.tistory.com/236
 
+2. Bind data: https://jusths.tistory.com/237
