@@ -69,7 +69,6 @@ func putUserURIJSONHandle(c *gin.Context) {
 		"status": "ok",
 		"data":   user,
 	})
-
 }
 
 func newServer() *gin.Engine {
